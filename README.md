@@ -4,9 +4,11 @@ This is an extension of The Web Conference 2021 paper [Knowledge-Preserving Incr
 
 # To run FinEvent Incremental
 
-step 1. run generate_initial_features.py to generate the initial features for the messages
+step 1. run utils/generate_initial_features.py to generate the initial features for the messages
 
-step 2. run custom_message_graph.py to construct incremental message graphs. To construct small message graphs for test purpose, set test=True when calling construct_incremental_dataset_0922(). To use all the messages (see Appendix of the paper for a statistic of the number of messages in the graphs), set test=False.
+step 2. run utils/custom_message_graph.py to construct incremental message graphs. To construct small message graphs for test purpose, set test=True when calling construct_incremental_dataset_0922(). To use all the messages (see Appendix of the paper for a statistic of the number of messages in the graphs), set test=False.
+
+step . run main.py
 
 # Datasets
 ## Twitter Dataset
