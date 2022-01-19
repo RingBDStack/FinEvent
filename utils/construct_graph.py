@@ -418,22 +418,22 @@ def construct_incremental_dataset_0922(df, save_path, features, test=True):
     return message, all_graph_mins
 
 
-#save_path = './incremental_0808/'
-save_path = 'offline_1115/'
+save_path = './incremental_test/'
 if not os.path.exists(save_path):
     os.mkdir(save_path)
 
 # load data (68841 tweets, multiclasses filtered)
-df_np = np.load('pre_data/68841_tweets_multiclasses_filtered_0722.npy', allow_pickle=True)
+p_part1 = '../datasets/Twitter/68841_tweets_multiclasses_filtered_0722_part1.npy'
+p_part2 = '../datasets/Twitter/68841_tweets_multiclasses_filtered_0722_part2.npy'
+df_np_part1 = np.load(p_part1, allow_pickle=True)
+df_np_part2 = np.load(p_part2, allow_pickle=True)
+df_np = np.concatenate((df_np_part1, df_np_part2), axis = 0)
 print("Data loaded.")
 df = pd.DataFrame(data=df_np, columns=["event_id", "tweet_id", "text", "user_id", "created_at", "user_loc",
                                        "place_type", "place_full_name", "place_country_code", "hashtags",
                                        "user_mentions", "image_urls", "entities",
                                        "words", "filtered_words", "sampled_words"])
 print("Data converted to dataframe.")
-# print(df.shape)
-# print(df.head(10))
-# print()
 
 # sort data by time
 df = df.sort_values(by='created_at').reset_index()
@@ -441,11 +441,9 @@ df = df.sort_values(by='created_at').reset_index()
 # append date
 df['date'] = [d.date() for d in df['created_at']]
 
-# print(df['date'].value_counts())
-
 # load features
 # the dimension of feature is 300 in this dataset
-f = np.load('pre_data/features_69612_0709_spacy_lg_zero_multiclasses_filtered.npy')
+f = np.load('../datasets/Twitter/features_69612_0709_spacy_lg_zero_multiclasses_filtered.npy')
 
 # generate test graphs, features, and labels
 message, all_graph_mins = construct_incremental_dataset_0922(df, save_path, f, True)

@@ -30,13 +30,13 @@ class FinEvent():
                   RL_thresholds=None,
                   loss_fn_dgi=None):
 
-        # step1: make dir for graph i
+        # make dir for graph i
         # ./incremental_0808//embeddings_0403005348/block_xxx
         save_path_i = embedding_save_path + '/block_' + str(i)
         if not os.path.isdir(save_path_i):
             os.mkdir(save_path_i)
 
-        # step2: load data
+        #load data
         relation_ids: List[str] = ['entity', 'userid', 'word']
         homo_data = create_homodataset(self.args.data_path, [train_i, i], self.args.validation_percent)
         multi_r_data = create_multi_relational_graph(self.args.data_path, relation_ids, [train_i, i])
@@ -76,7 +76,6 @@ class FinEvent():
                                                                                 
         # batch testing
         extract_features = torch.FloatTensor([])
-        # extract_features = extract_features.to(device)
         num_batches = int(test_num_samples / self.args.batch_size) + 1
         with torch.no_grad():
             for batch in range(num_batches):
@@ -90,8 +89,6 @@ class FinEvent():
 
                 # sampling neighbors of batch nodes
                 adjs, n_ids = sampler.sample(filtered_multi_r_data, node_idx=batch_nodes, sizes=[-1, -1], batch_size=self.args.batch_size)
-                # adjs = [[r.to(device) for r in adj] for adj in adjs]
-                # n_ids = [n.to(device) for n in n_ids]
 
                 pred = model(homo_data.x, adjs, n_ids, device, RL_thresholds)
 
@@ -141,13 +138,13 @@ class FinEvent():
         :return:
         """
 
-        # step1: make dir for graph i
+        # make dir for graph i
         # ./incremental_0808//embeddings_0403005348/block_xxx
         save_path_i = embedding_save_path + '/block_' + str(i)
         if not os.path.isdir(save_path_i):
             os.mkdir(save_path_i)
 
-        # step2: load data
+        # load data
         relation_ids: List[str] = ['entity', 'userid', 'word']
         homo_data = create_homodataset(self.args.data_path, [train_i, i], self.args.validation_percent)
         multi_r_data = create_multi_relational_graph(self.args.data_path, relation_ids, [train_i, i])
@@ -190,15 +187,15 @@ class FinEvent():
         with open(save_path_i + '/log.txt', 'a') as f:
             f.write(message)
 
-        # step12.0: record the highest validation nmi ever got for early stopping
+        # record the highest validation nmi ever got for early stopping
         best_vali_nmi = 1e-9
         best_epoch = 0
         wait = 0
-        # step12.1: record validation nmi of all epochs before early stop
+        # record validation nmi of all epochs before early stop
         all_vali_nmi = []
-        # step12.2: record the time spent in seconds on each batch of all training/maintaining epochs
+        # record the time spent in seconds on each batch of all training/maintaining epochs
         seconds_train_batches = []
-        # step12.3: record the time spent in mins on each epoch
+        # record the time spent in mins on each epoch
         mins_train_epochs = []
 
         # step13: start training
@@ -216,7 +213,6 @@ class FinEvent():
             # filter neighbor in advance to fit with neighbor sampling
             filtered_multi_r_data = RL_neighbor_filter(multi_r_data, RL_thresholds, filter_path) if epoch >= self.args.RL_start0 and self.args.sampler == 'RL_sampler' else multi_r_data
                                                                                     
-            # step13.0: forward
             model.train()
 
             train_num_samples, valid_num_samples = homo_data.train_mask.size(0), homo_data.val_mask.size(0)
@@ -249,7 +245,6 @@ class FinEvent():
 
                 total_loss += loss.item()
 
-                # step13.1: metrics
                 for metric in metrics:
                     metric(pred, batch_labels, loss_outputs)
                 if batch % self.args.log_interval == 0:
@@ -257,17 +252,14 @@ class FinEvent():
                     
                     for metric in metrics:
                         message += '\t{}: {:.4f}'.format(metric.name(), metric.value())
-                    #print(message)
+
                     with open(save_path_i + '/log.txt', 'a') as f:
                         f.write(message)
                     losses = []
 
-                # print(torch.cuda.memory_summary(device=None, abbreviated=False))
                 del pred, loss_outputs
                 gc.collect()
 
-                # step13.2: backward
-                
                 loss.backward()
                 optimizer.step()
 
@@ -291,7 +283,7 @@ class FinEvent():
                 f.write(message)
             mins_train_epochs.append(mins_spent)
 
-            # step15: validation
+            # validation
             # infer the representations of all tweets
             model.eval()
 
@@ -356,7 +348,7 @@ class FinEvent():
                 break
             # end one epoch
 
-        # step17: save all validation nmi
+        # save all validation nmi
         np.save(save_path_i + '/all_vali_nmi.npy', np.asarray(all_vali_nmi))
         # save time spent on epochs
         np.save(save_path_i + '/mins_train_epochs.npy', np.asarray(mins_train_epochs))
@@ -365,7 +357,7 @@ class FinEvent():
         np.save(save_path_i + '/seconds_train_batches.npy', np.asarray(seconds_train_batches))
         print('Saved seconds_train_batches.')
 
-        # step18: load the best model of the current block
+        # load the best model of the current block
         best_model_path = save_path_i + '/models/best.pt'
         model.load_state_dict(torch.load(best_model_path))
         print("Best model loaded.")
