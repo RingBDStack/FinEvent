@@ -12,7 +12,7 @@ step . run main.py
 
 # Datasets
 ## Twitter Dataset
-The Twitter dataset [1] is collected to evaluate social event detection methods. After filtering out repeated and irretrievable tweets, the dataset contains 68,841 manually labeled tweets related to 503 event classes, spread over a period of four weeks. Please find the original dataset at http://mir.dcs.gla.ac.uk/resources/
+The Twitter dataset [1] is collected to evaluate social event detection methods. After filtering out repeated and irretrievable tweets, the dataset contains 68,841 manually labeled tweets related to 503 event classes, spread over a period of four weeks. To conduct the cross-lingual experiment, we additionally collect French Twitter dataset containing 64,516 labeled tweets related to 257 event classes and spread over about 3 weeks (a period of 23 days). Please find the original dataset at http://mir.dcs.gla.ac.uk/resources/
 
 # Baselines
 For Word2vec[3], we use the [spaCy pre-trained vectors](https://spacy.io/models/en#en_core_web_lg).
