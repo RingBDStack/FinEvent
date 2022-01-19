@@ -25,7 +25,9 @@ step 4. run offline.py
 ## To run FinEvent Cross-lingual
 step 1-3 ditto (change the file path)
 
-step 4. run resume.py
+step 4. run main.py (Train a model from high-source dataset)
+
+step 5. run resume.py
 
 # Baselines
 For Word2vec[3], we use the [spaCy pre-trained vectors](https://spacy.io/models/en#en_core_web_lg).
