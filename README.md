@@ -34,7 +34,7 @@ step 5. run resume.py
 # Baselines
 For Word2vec[3], we use the [spaCy pre-trained vectors](https://spacy.io/models/en#en_core_web_lg).
 
-For [LDA](https://radimrehurek.com/gensim/models/ldamodel.html)[4], [WMD](https://tedboy.github.io/nlps/generated/generated/gensim.similarities.WmdSimilarity.html#gensim.similarities.WmdSimilarity)[5], [BERT](https://github.com/huggingface/transformers)[6], and [PP-GCN](https://github.com/RingBDStack/PPGCN)[7], we use the open-source implementations.
+For [LDA](https://radimrehurek.com/gensim/models/ldamodel.html)[4], [WMD](https://tedboy.github.io/nlps/generated/generated/gensim.similarities.WmdSimilarity.html#gensim.similarities.WmdSimilarity)[5], [BERT](https://github.com/huggingface/transformers)[6], [PP-GCN](https://github.com/RingBDStack/PPGCN)[7] and [KPGNN](https://github.com/RingBDStack/KPGNN.git), we use the open-source implementations.
 
 We implement EventX[8] with Python 3.7.3 and BiLSTM[9] with Pytorch 1.6.0. Please refer to the baselines folder. 
 
