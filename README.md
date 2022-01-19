@@ -8,6 +8,8 @@ The Twitter dataset [1] is collected to evaluate social event detection methods.
 # Function Mode
 online + offline + cross-lingual
 
+To reduce the complicated data splitting process, we release the splitted datasets on [Google Drive](https://drive.google.com/file/d/1OCZ_OokyTA3mKe18dRSizhS0fJTcVfuD/view?usp=sharing)
+
 ## To run FinEvent Incremental
 step 1. run utils/generate_initial_features.py to generate the initial features for the messages
 
