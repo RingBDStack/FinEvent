@@ -2,16 +2,30 @@
 Code for "Reinforced, Incremental and Cross-lingual Event Detection From Social Messages" Accepted by T-PAMI.
 This is an extension of The Web Conference 2021 paper [Knowledge-Preserving Incremental Social Event Detection via Heterogeneous GNNs](https://arxiv.org/pdf/2101.08747.pdf).
 
-# To run FinEvent Incremental
+# Twitter Datasets
+The Twitter dataset [1] is collected to evaluate social event detection methods. After filtering out repeated and irretrievable tweets, the dataset contains 68,841 manually labeled tweets related to 503 event classes, spread over a period of four weeks. To conduct the cross-lingual experiment, we additionally collect French Twitter dataset containing 64,516 labeled tweets related to 257 event classes and spread over about 3 weeks (a period of 23 days). Please find the original dataset at http://mir.dcs.gla.ac.uk/resources/
 
+# Function Mode
+online + offline + cross-lingual
+
+## To run FinEvent Incremental
 step 1. run utils/generate_initial_features.py to generate the initial features for the messages
 
 step 2. run utils/custom_message_graph.py to construct incremental message graphs. To construct small message graphs for test purpose, set test=True when calling construct_incremental_dataset_0922(). To use all the messages (see Appendix of the paper for a statistic of the number of messages in the graphs), set test=False.
 
-step . run main.py
+step 3. run utils/save_edge_index.py in advance to acclerate the training process.
 
-# Twitter Datasets
-The Twitter dataset [1] is collected to evaluate social event detection methods. After filtering out repeated and irretrievable tweets, the dataset contains 68,841 manually labeled tweets related to 503 event classes, spread over a period of four weeks. To conduct the cross-lingual experiment, we additionally collect French Twitter dataset containing 64,516 labeled tweets related to 257 event classes and spread over about 3 weeks (a period of 23 days). Please find the original dataset at http://mir.dcs.gla.ac.uk/resources/
+step 4. run main.py
+
+## To run FinEvent Offline
+step 1-3 ditto (change the file path)
+
+step 4. run offline.py
+
+## To run FinEvent Cross-lingual
+step 1-3 ditto (change the file path)
+
+step 4. run resume.py
 
 # Baselines
 For Word2vec[3], we use the [spaCy pre-trained vectors](https://spacy.io/models/en#en_core_web_lg).
